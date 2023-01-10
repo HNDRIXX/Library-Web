@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/css/signin.css">
+    <title>Sign In</title>
+  </head>
+  <body>
+    <div class="signInContainer">
+      <form id="signInForm">
+        <img src="/drawable/ahs.png" alt="">
+        
+        <h1>Sign In</h1>
+  
+        <label for="email">Email:</label><br>
+        <input style="margin-bottom: 10px;" id="email" name="email"><br>
+  
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+  
+        <button type="submit">SUBMIT</button>
+      </form> 
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+	  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    
+    <script type="module">
+      localStorage.clear();
+
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js'
+    
+        // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js'
+
+        // Add Firebase products that you want to use
+        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js'
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js'
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUM36WyNUQkPKMxs-aONokQzzB6Jf_Mnw",
+            authDomain: "libraryapp-a10b1.firebaseapp.com",
+            databaseURL: "https://libraryapp-a10b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "libraryapp-a10b1",
+            storageBucket: "libraryapp-a10b1.appspot.com",
+            messagingSenderId: "773046714159",
+            appId: "1:773046714159:web:546d36a05ba90d3cf72bda",
+            measurementId: "G-DGWRLS52QS"
+        }
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const databaseRef = getDatabase();
+        const auth = getAuth();
+
+        var form = document.getElementById("signInForm");
+
+        // Add a submit event listener to the form
+        form.addEventListener("submit", function(event) {
+            // Prevent the default refresh of the page on submit
+            event.preventDefault();
+
+            // Get the email and password values from the form
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            // Sign in the user with email and password
+            signInWithEmailAndPassword(auth, email, password).then(() => {
+              auth.onAuthStateChanged((user) => {
+                if (user) {
+                  firebase.initializeApp(firebaseConfig);
+
+                  var formDB = firebase.database().ref("Users/" + user.uid);
+
+                  formDB.once("value", function(snapshot) {
+                    snapshot.forEach(function(child) {
+                      // console.log(child.key+": "+child.val());
+
+                      if(child.key == ("role")){
+                        if(child.val() == "Student" ||child.val() == "Faculty"){
+                          window.location.replace("userhome.html");
+                        }else if (child.val() == "Admin (Librarian)"){
+
+
+                            var getInput = user.uid
+                            localStorage.setItem("storageName",getInput);
+
+
+                          window.location.replace("adminhome.html");
+                        }
+                      }
+                    });
+                  });
+
+                  // formDB.on("value", function(snapshot) {
+                  //   snapshot.forEach(function(childSnapshot) {
+                  //   var childData = childSnapshot.val();
+                  //   var id=childData.id;
+                  //   console.log(childData);
+
+                  //   });
+                  // });
+
+                  // // User logged in already or has just logged in.
+                  // console.log(user.uid);
+                } else {
+                  // User not logged in or has just logged out.
+                }
+              });
+              
+                // window.location.replace("userhome.html");
+            }).catch(function(error) {
+            // Handle errors here
+            console.error(error.code);
+            console.error(error.message);
+
+            alert(error.code + error.message);
+            });
+        });
+    </script>
+
+    <!-- <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script>
+      // Get the form element
+      var form = document.getElementById("login-form");
+
+      // Add a submit event listener to the form
+      form.addEventListener("submit", function(event) {
+        // Prevent the default refresh of the page on submit
+        event.preventDefault();
+
+        // Get the email and password values from the form
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        // Sign in the user with email and password
+        firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+          // Handle errors here
+          console.error(error.code);
+          console.error(error.message);
+        });
+      });
+    </script> -->
+  </body>
+</html>

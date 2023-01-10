@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+* {
+    margin: 0 auto;
+    padding: 0 auto;
+}
+
+body{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    color: white;
+    background: #a72828;
+    font-family: 'Montserrat', sans-serif;
+}
+
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.signInContainer{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    
+    transform: translate(-50%, -50%);
+}
+
+h1{
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#signInForm label{
+    font-weight: 100;
+    text-align: left;
+    font-size: 15px;
+    color: #e6e6e6;
+}
+
+#signInForm input{
+    margin-top: 5px;
+    outline: none;
+    border: none;
+    padding: 4px;
+    border-radius: 3px;
+    width: 300px;
+}
+
+button{
+    color: white;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    outline: none;
+    padding: 15px;
+    width: 200px;
+    background-color: #fc5e5e;
+}
+
+button:hover{
+    transition: all 1s ease;
+    background-color: #df4444;
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/profile.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/4c890c6a79.js" crossorigin="anonymous"></script>
+    <title>PROFILE</title>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js'
+    
+    // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js'
+
+    // Add Firebase products that you want to use
+    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js'
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js'
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCUM36WyNUQkPKMxs-aONokQzzB6Jf_Mnw",
+        authDomain: "libraryapp-a10b1.firebaseapp.com",
+        databaseURL: "https://libraryapp-a10b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "libraryapp-a10b1",
+        storageBucket: "libraryapp-a10b1.appspot.com",
+        messagingSenderId: "773046714159",
+        appId: "1:773046714159:web:546d36a05ba90d3cf72bda",
+        measurementId: "G-DGWRLS52QS"
+    }
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const databaseRef = getDatabase();
+    const auth = getAuth();
+
+    var userUid = localStorage.getItem("storageName");
+
+    if (userUid == null){
+        window.location.replace("signin.html");
+    }else{
+        // window.onload = alert(userUid);
+        
+        firebase.initializeApp(firebaseConfig);
+
+        var formDB = firebase.database().ref("Users/" + userUid);
+
+        formDB.once("value", function(snapshot) {
+            snapshot.forEach(function(child) {
+                console.log(child.key+": "+ child.val());
+                
+                if (child.key == ("fullname")){
+                    var nameValue = child.val();
+
+                    document.getElementById("fullname").innerHTML = nameValue;
+                }else if (child.key == ("email")){
+                    var emailValue = child.val();
+
+                    document.getElementById("email").innerHTML = emailValue;
+                }else if (child.key == ("address")){
+                    var addressValue = child.val();
+
+                    document.getElementById("address").innerHTML = addressValue;
+                }else if (child.key == ("memID")){
+                    var memIDValue = child.val();
+
+                    document.getElementById("memID").innerHTML = memIDValue;
+                }else if (child.key == ("password")){
+                    var passwordValue = child.val();
+
+                    document.getElementById("password").innerHTML = passwordValue;
+                }else if (child.key == ("role")){
+                    var roleValue = child.val();
+
+                    document.getElementById("role").innerHTML = roleValue;
+                }
+            });
+        });
+    }
+</script>
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="logo" style="margin-bottom: 40px;">
+                <img src="drawable/ahs.png" draggable="false">
+            </div>
+            
+            <ul style="list-style-type:none;">
+                <li><a href="adminhome.html" ><i class="fas fa-home"></i>HOME</a></li>
+                <li id="active"><a href="profile.html" id="active"><i class="fa-solid fa-face-laugh-beam"></i>PROFILE</a></li>
+                
+                <div class="dropdown">
+                    <a id="records"><label for="checkbox"><li><i class="fa fa-layer-group" style="padding-right: 10px;"></i>RECORDS</li></label></a>
+                    <input type="checkbox" id="checkbox"/>
+                    <ul>
+                        <a href="libraryusers.html"><li id="li"><i class="fas fa-file"></i>USERS</li></a><br>
+                        <a href="#"><li id="li"><i class="fas fa-file"></i>BORROWED BOOKS</li></a><br>
+                        <a href="#"><li id="li"><i class="fas fa-file"></i>RETURNED BOOKS</li></a><br>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <a id="records"><label for="checkbox2"><li><i class="fa fa-book-open" style="padding-right: 10px;"></i>MANAGE BOOKS</li></label></a>
+                    <input type="checkbox" id="checkbox2"/>
+                    <ul>
+                        <a href="libraryusers.html"><li id="li"><i class="fas fa-file"></i>ADD BOOKS</li></a><br>
+                        <a href="borrowedbooks.html"><li id="li"><i class="fas fa-file"></i>ISSUE BOOKS</li></a><br>
+                        <a href="#"><li id="li"><i class="fas fa-file"></i>RETURN BOOKS</li></a><br>
+                        <a href="#"><li id="li"><i class="fas fa-file"></i>UPDATE BOOK CATALOG</li></a><br>
+                    </ul>
+                </div>
+                
+                <li><a href=""><i class="fas fa-bars"></i>LIBRARY POLICY</a></li>
+                <li><a href=""><i class="fas fa-info-circle"></i>LIBRARY INFORMATION</a></li>
+                <li style="margin-bottom: 100px;"><a onclick="signOut()"><i class="fas fa-sign-out"></i>SIGN OUT</a></li>
+                
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <h1>Profile</h1>
+
+            <div class="content">
+
+                <label style="display: inline;" for="memID"><i class="fa-regular fa-id-card"></i>ID:&nbsp;&nbsp;</label>
+                <p style="display: inline;" id="memID" name="memID"></p><br><br>
+                
+                <label for="fullname"><i class="fa-solid fa-user"></i>&nbsp;Name:</label><br>
+                <p style="margin-bottom: 10px;" id="fullname" name="fullname"></p><br>
+
+                <label for="email"><i class="fa-solid fa-envelope"></i>&nbsp;Email:</label><br>
+                <p style="margin-bottom: 10px;" id="email" name="email"></p><br>
+
+                <label for="address"><i class="fa-solid fa-home"></i>&nbsp;Address:</label><br>
+                <p style="margin-bottom: 10px;" id="address" name="address"></p><br>
+
+                <label for="password"><i class="fa-solid fa-key"></i>&nbsp;Password:</label><br>
+                <p style="margin-bottom: 10px;" id="password" name="password"></p><br>
+
+                <label style="display: inline;" for="address"><i class="fa-solid fa-user"></i>&nbsp;Role:&nbsp;&nbsp;</label>
+                <p style="display: inline;" id="role" name="role"></p><br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function signOut() {
+            localStorage.clear();
+            window.location.replace("signin.html");
+        }
+    </script>
+
+</body>
+</html>
