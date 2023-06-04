@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="/css/returnbooks.css">
+    <link rel="stylesheet" href="/css/updatebookcatalog.css">
     <script src="https://kit.fontawesome.com/4c890c6a79.js" crossorigin="anonymous"></script>
     <title>RECORDS</title>
 </head>
@@ -49,40 +49,101 @@
         
         firebase.initializeApp(firebaseConfig);
 
-        var formDB = firebase.database().ref("Book Transaction");
+        var key;
+        var totalPages;
+        var formDB = firebase.database().ref("Book Info");
         var tbody = document.getElementById("tbody1");
 
         function AddItemData() {
-            formDB.orderByChild('transactionFlag').equalTo("3").once("value", function(snapshot) {
-                snapshot.forEach(function(child) {
-                    var transactionID = child.val().transactionCode;
-                    var bookTitle = child.val().bookTitle;
-                    var fullname = child.val().fullname;
+            formDB.orderByChild("bookTitle").once("value", function(snapshot) {
 
-                    AddTable(transactionID, bookTitle, fullname);
+                    totalPages = snapshot.numChildren();
+
+
+                var perPage = 5;
+                var offset = (totalPages-1) * perPage;
+                var totalTotal = Math.ceil(totalPages / perPage);
+
+                var currentPage = totalPages;
+                var startPage = currentPage - 2;
+                var endPage = currentPage + 2;
+
+                // if (startPage <= 0) {
+                //     endPage -= (startPage - 1);
+                //     startPage = 1;
+                // }
+
+                // if (endPage > totalTotal)
+                //     endPage = totalTotal;
+
+                //     alert(startPage);
+        
+
+                var sum = 0;
+                let paginations = document.getElementById("paginations");
+                let parali = document.createElement("li");
+
+                for(var i=1; i<=totalTotal; i++) {
+                    const para = document.createElement("a");
+                        
+                    para.innerText = i;
+
+                    parali.appendChild(para);
+
+                    // Append to body:
+                        
+                    paginations.appendChild(parali)
+                }
+                
+                    // for(var i=1; i <= totalTotal; i++){
+                    //     const para = document.createElement("a");
+                    //     para.innerText = i;
+
+                    //     // Append to body:
+                    //     paginations.appendChild(para)
+
+                    //     // alert(i);
+                    // }
+
+                snapshot.forEach(function(child) {
+                    var key = child.key;
+                    var bookTitle = child.val().bookTitle;
+                    var bookAuthor = child.val().bookAuthor;
+                    var bookCategory = child.val().bookCategory;
+                    var imageURL = child.val().imageUrl;
+
+                    AddTable(key, imageURL, bookTitle, bookAuthor, bookCategory);
                 });
             });
         }
 
         window.onload = AddItemData;
 
-        function AddTable(transactionID, bookTitle, fullname) {
+        function AddTable(key, imageURL, bookTitle, bookAuthor, bookCategory) {
             let tbody = document.getElementById("tbody1");
             let trow = document.createElement("tr");
+            let td0 = document.createElement("td");
             let td1 = document.createElement("td");
             let td2 = document.createElement("td");
             let td3 = document.createElement("td");
+            let td4 = document.createElement("td");
 
-            td1.innerHTML = transactionID;
-            td2.innerHTML = bookTitle,
-            td3.innerHTML = fullname;
+            td0.innerHTML = "<img id='bookImage' src='" + imageURL + "' draggable='false'>";
+            td1.innerHTML = bookTitle;
+            td2.innerHTML = bookAuthor,
+            td3.innerHTML = bookCategory;
+            td4.innerHTML = "<a id='updatebutton' href='updatebookcatalogedit.html?unqC=" + key + "'><i class='fa-solid fa-pen-to-square'></i></a>";
 
+            trow.appendChild(td0);
             trow.appendChild(td1);
             trow.appendChild(td2);
             trow.appendChild(td3);
+            trow.appendChild(td4);
 
             tbody.appendChild(trow);
         }
+
+    
     }
 
 </script>
@@ -98,24 +159,23 @@
                 <li><a href="profile.html"><i class="fa-solid fa-face-laugh-beam"></i>PROFILE</a></li>
                 
                 <div class="dropdown">
-                    <a id="active" class="records"><label for="checkbox"><li id="active"><i class="fa fa-layer-group" style="padding-right: 10px;"></i>RECORDS</li></label></a>
-                    <input type="checkbox" id="checkbox" checked/>
+                    <a class="records"><label for="checkbox"><li><i class="fa fa-layer-group" style="padding-right: 10px;"></i>RECORDS</li></label></a>
+                    <input type="checkbox" id="checkbox"/>
                     <ul>
                         <a href="libraryusers.html"><li id="li"><i class="fas fa-file"></i>USERS</li></a><br>
                         <a href="borrowedbooks.html"><li id="li"><i class="fas fa-file"></i>BORROWED BOOKS</li></a><br>
-                        <a href="returnedbooks.html"><li id="li" class="activefont"><i class="fas fa-file"></i>RETURNED BOOKS</li></a><br>
+                        <a href="returnedbooks.html"><li id="li"><i class="fas fa-file"></i>RETURNED BOOKS</li></a><br>
                     </ul>
                 </div>
-                
 
                 <div class="dropdown">
-                    <a class="records"><label for="checkbox2"><li><i class="fa fa-book-open" style="padding-right: 10px;"></i>MANAGE BOOKS</li></label></a>
-                    <input type="checkbox" id="checkbox2"/>
+                    <a id="active" class="records"><label for="checkbox2"><li  id="active"><i class="fa fa-book-open" style="padding-right: 10px;"></i>MANAGE BOOKS</li></label></a>
+                    <input type="checkbox" id="checkbox2"/ checked>
                     <ul>
                         <a href="#"><li id="li"><i class="fas fa-file"></i>ADD BOOKS</li></a><br>
                         <a href="issuebooks.html"><li id="li"><i class="fas fa-file"></i>ISSUE BOOKS</li></a><br>
-                        <a href="#"><li id="li"><i class="fas fa-file"></i>RETURN BOOKS</li></a><br>
-                        <a href="#"><li id="li"><i class="fas fa-file"></i>UPDATE BOOK CATALOG</li></a><br>
+                        <a href="returnbooks.html"><li id="li"><i class="fas fa-file"></i>RETURN BOOKS</li></a><br>
+                        <a href="updatebookcatalog.html"><li id="li"  class="activefont"><i class="fas fa-file"></i>UPDATE BOOK CATALOG</li></a><br>
                     </ul>
                 </div>
                 
@@ -127,20 +187,34 @@
         </div>
 
         <div class="main_content">
-            <h1>Returned Books</h1>
+            <h1>Update Book Catalog</h1>
 
+            
             <div class="content">
+                <ul id='paginations' style="display:none">
+                </ul>
+                
                 <table>
+                    <colgroup>
+                        <col span="1" style="width: 10%;">
+                        <col span="1" style="width: 30%;">
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 10%;">
+                        <col span="1" style="width: 10%;">
+                     </colgroup>
+                     
                     <thead id="thead1">
-                        <th>Transaction ID</th>
+                        <th>Image</th>
                         <th>Book Title</th>
-                        <th>Borrower's Name</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>Action</th>
                     </thead>
 
                     <tbody id="tbody1">
+                        
                     </tbody>
                 </table>
-                
             </div>
             </div>
         </div>

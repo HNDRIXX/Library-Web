@@ -102,6 +102,7 @@ body{
     padding-left: 30px;
     justify-content:space-between;
     align-items:center;
+    box-shadow: #555555cc 0 0 20px;
 
     background-color: #580303;
     color: #ffffff;
@@ -188,7 +189,6 @@ table{
     line-height: 15px;
     height: auto;
     width: 100%;
-    table-layout: fixed;
 }
 
 td+td {

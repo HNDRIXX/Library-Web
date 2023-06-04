@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/updatebookcatalogedit.css">
+    <script src="https://kit.fontawesome.com/4c890c6a79.js" crossorigin="anonymous"></script>
+    <title>EDIT</title>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js'
+    
+    // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js'
+
+    // Add Firebase products that you want to use
+    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js'
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js'
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCUM36WyNUQkPKMxs-aONokQzzB6Jf_Mnw",
+        authDomain: "libraryapp-a10b1.firebaseapp.com",
+        databaseURL: "https://libraryapp-a10b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "libraryapp-a10b1",
+        storageBucket: "libraryapp-a10b1.appspot.com",
+        messagingSenderId: "773046714159",
+        appId: "1:773046714159:web:546d36a05ba90d3cf72bda",
+        measurementId: "G-DGWRLS52QS"
+    }
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const databaseRef = getDatabase();
+    const auth = getAuth();
+
+    var userUid = localStorage.getItem("storageName");
+    
+
+    if (userUid == null){
+        window.location.replace("signin.html");
+    }else{
+        // window.onload = alert(userUid);
+        
+        firebase.initializeApp(firebaseConfig);
+
+        var transactionFlag;
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var keyValue = url.searchParams.get("unqC");
+
+        var formDB = firebase.database().ref("Book Info");
+
+        // formDB.once("value").then(function(snapshot) {
+        //         userExistCheck = snapshot.exists();
+        //     }).catch((error) => {
+        // console.error(error);
+        // });
+
+        formDB.child(keyValue).once("value", function(snapshot) {
+            if (snapshot.numChildren() == 0){
+                alert("NO BOOK FOUND");
+                window.location.replace("updatebookcatalog.html");
+            }
+
+            snapshot.forEach(function(child) {
+                console.log(child.val());
+
+                    switch(child.key) {
+                        case "bookTitle":
+                            document.getElementById("bookTitle").value = child.val();
+                            break;
+
+                        case "bookAuthor":
+                            document.getElementById("bookAuthor").value = child.val();
+                            break;
+
+                        case "bookCategory":
+                            document.getElementById("bookCategory").value = child.val();
+                            break;
+
+                        case "bookPublisher":
+                            document.getElementById("bookPublisher").value = child.val();
+                            break;
+
+                        case "bookColNumber":
+                            document.getElementById("bookColNumber").value = child.val();
+                            break;
+
+                        case "bookCopies":
+                            document.getElementById("bookCopies").value = child.val();
+                            break;
+
+                        case "imageUrl":
+                            document.getElementById("imageBook").src = child.val();
+                            break;
+
+
+                        default:
+                            // code block
+
+                            
+                    }
+                    // var fullname = child.val();
+
+                    // document.getElementById("transactionID").innerHTML.value = transactionID;
+            })
+        });
+    }
+</script>
+<body>
+    <div class="popup">
+        <h2>Update Book</h2><hr>
+                                    
+        <a class="close" href="updatebookcatalog.html">×</a>
+
+        <form method="POST">
+            <div class="content">
+
+                <img id="imageBook" src="https://i.gifer.com/JVX7.gif" draggable="false">
+                
+                <form>
+                    <p>
+                        <label >Book Title :</label>
+                        <input id="bookTitle" type="text" >
+                    </p><br>
+                    <p>
+                        <label >Book Author :</label>
+                        <input id="bookAuthor" type="text">
+                    </p><br>
+
+                    <p>
+                        <label >Book Category :</label>
+                        <input id="bookCategory" type="text">
+                    </p><br>
+
+                    <p>
+                        <label >Book Publisher :</label>
+                        <input id="bookPublisher" type="text">
+                    </p><br>
+
+                    <p>
+                        <label >Book Call Number :</label>
+                        <input id="bookColNumber" type="text">
+                    </p><br>
+
+                    <p>
+                        <label >Book Copies :</label>
+                        <input id="bookCopies" type="text">
+                    </p><br>
+
+
+                    <button id="allowButton"><i class="fa-solid fa-rotate"></i>UPDATE</button>
+
+                  </form>
+                
+        </form>
+    </div>
+
+</body>
+</html>

@@ -41,7 +41,7 @@ body{
     padding: 20px 0px;
     position: fixed;
     transition: ease all .3s;
-    
+
     overflow: scroll;
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  
@@ -102,7 +102,8 @@ body{
     padding-left: 30px;
     justify-content:space-between;
     align-items:center;
-
+    box-shadow: #555555cc 0 0 20px;
+    
     background-color: #580303;
     color: #ffffff;
 }
@@ -172,6 +173,10 @@ body{
     color:#ffffff;
 }
 
+#checkbox {
+    opacity: 0;
+}
+
 #checkbox, #checkbox2 {
     opacity: 0;
 }
@@ -179,12 +184,11 @@ body{
 #checkbox:checked + ul, #checkbox2:checked + ul{
     display: block;
 }
-
 table{
     border-collapse: collapse;
     line-height: 15px;
     height: auto;
-    width: 100%;
+    width: 100%; 
 }
 
 td+td {
@@ -217,3 +221,13 @@ table tr:nth-child(odd) td{
     background-color: #ff10101e;
 }
 
+#actionbutton{
+    color: #4e0000;
+    font-size: 17px;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    outline: none;
+    text-align: center;
+    background-color: #f8f8f800;
+}

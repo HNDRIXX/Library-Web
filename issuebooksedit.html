@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/issueedit.css">
+    <script src="https://kit.fontawesome.com/4c890c6a79.js" crossorigin="anonymous"></script>
+    <title>EDIT</title>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js'
+    
+    // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
+    import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js'
+
+    // Add Firebase products that you want to use
+    import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js'
+    import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js'
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCUM36WyNUQkPKMxs-aONokQzzB6Jf_Mnw",
+        authDomain: "libraryapp-a10b1.firebaseapp.com",
+        databaseURL: "https://libraryapp-a10b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "libraryapp-a10b1",
+        storageBucket: "libraryapp-a10b1.appspot.com",
+        messagingSenderId: "773046714159",
+        appId: "1:773046714159:web:546d36a05ba90d3cf72bda",
+        measurementId: "G-DGWRLS52QS"
+    }
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const databaseRef = getDatabase();
+    const auth = getAuth();
+
+    var userUid = localStorage.getItem("storageName");
+    
+
+    if (userUid == null){
+        window.location.replace("signin.html");
+    }else{
+        // window.onload = alert(userUid);
+        
+        firebase.initializeApp(firebaseConfig);
+
+        var transactionFlag;
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var keyValue = url.searchParams.get("unqC");
+
+        var formDB = firebase.database().ref("Book Transaction");
+
+        // formDB.once("value").then(function(snapshot) {
+        //         userExistCheck = snapshot.exists();
+        //     }).catch((error) => {
+        // console.error(error);
+        // });
+
+        formDB.child(keyValue).once("value", function(snapshot) {
+            if (snapshot.numChildren() == 0){
+                alert("NO TRANSACTION FOUND");
+                window.location.replace("returnbooks.html");
+            }
+
+            snapshot.forEach(function(child) {
+                console.log(child.val());
+
+                    switch(child.key) {
+                        case "fullname":
+                            document.getElementById("fullname").innerHTML = child.val();
+                            break;
+
+                        case "transactionCode":
+                            document.getElementById("transactionID").innerHTML = child.val();
+                            break;
+
+                        case "bookTitle":
+                            document.getElementById("bookTitle").innerHTML = child.val();
+                            break;
+
+                        case "date":
+                            document.getElementById("date").innerHTML = child.val();
+                            break;
+
+                        case "imageUrl":
+                            document.getElementById("imageBook").src = child.val();
+                            break;
+
+                        case "transactionFlag":
+                            document.getElementById("transactionFlag").innerHTML = child.val();
+                            break;
+
+                        default:
+                            // code block
+
+                            
+                    }
+                    // var fullname = child.val();
+
+                    // document.getElementById("transactionID").innerHTML.value = transactionID;
+            })
+        });
+    }
+</script>
+<body>
+    <div class="popup">
+        <h2>Edit Issue Book</h2><hr>
+                                    
+        <a class="close" href="javascript:exit()">×</a>
+
+        <form method="POST">
+            <div class="content">
+
+                <img id="imageBook" src="https://i.gifer.com/JVX7.gif" draggable="false">
+                
+                <form>
+                    <p>
+                        <label >Transaction ID :</label>
+                        <span id="transactionID" ></span>  
+                    </p><br>
+                    <p>
+                        <label >Borrower's Name :</label>
+                        <span id="fullname"></span>
+                    </p><br>
+
+                    <p>
+                        <label >Book Title :</label>
+                        <span id="bookTitle"></span>
+                    </p><br>
+
+                    <p>
+                        <label >Date Requested :</label>
+                        <span id="date"></span>
+                        <span id="transactionFlag" style="display: none;"></span>
+                    </p><br>
+
+                    <p>
+                        <button id="denyButton"><i class="fa-sharp fa-solid fa-circle-xmark"></i>DENY</button>
+                        <button id="allowButton"><i class="fa-sharp fa-solid fa-circle-check"></i>ALLOW</button>
+                    </p>
+
+                  </form>
+                
+        </form>
+    </div>
+
+</body>
+
+<script>
+    function exit() {
+        if(document.getElementById("transactionFlag").innerText == 1){
+            window.location.replace("issuebooks.html");
+        }else if (document.getElementById("transactionFlag").innerText == 2){
+            window.location.replace("returnbooks.html");
+        }
+    }
+    
+    </script>
+</html>

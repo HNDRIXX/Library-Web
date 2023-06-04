@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/css/borrowedbook.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/4c890c6a79.js" crossorigin="anonymous"></script>
     <title>RECORDS</title>
 </head>
@@ -112,10 +111,10 @@
                     <a class="records"><label for="checkbox2"><li><i class="fa fa-book-open" style="padding-right: 10px;"></i>MANAGE BOOKS</li></label></a>
                     <input type="checkbox" id="checkbox2"/>
                     <ul>
-                        <a href="libraryusers.html"><li id="li"><i class="fas fa-file"></i>ADD BOOKS</li></a><br>
-                        <a href="borrowedbooks.html"><li id="li"><i class="fas fa-file"></i>ISSUE BOOKS</li></a><br>
-                        <a href="#"><li id="li"><i class="fas fa-file"></i>RETURN BOOKS</li></a><br>
-                        <a href="#"><li id="li"><i class="fas fa-file"></i>UPDATE BOOK CATALOG</li></a><br>
+                        <a href="#"><li id="li"><i class="fas fa-file"></i>ADD BOOKS</li></a><br>
+                        <a href="issuebooks.html"><li id="li"><i class="fas fa-file"></i>ISSUE BOOKS</li></a><br>
+                        <a href="returnbooks.html"><li id="li"><i class="fas fa-file"></i>RETURN BOOKS</li></a><br>
+                        <a href="updatebookcatalog.html"><li id="li"><i class="fas fa-file"></i>UPDATE BOOK CATALOG</li></a><br>
                     </ul>
                 </div>
                 
@@ -149,7 +148,7 @@
     <script>
         function signOut() {
             localStorage.clear();
-            window.location.replace("signin.html");
+            window.location.replace("index.html");
         }
     </script>
 </body>

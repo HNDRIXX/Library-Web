@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Collecting Data</title>
+</head>
+
+<body class="container" style="margin-top: 50px;
+	width: 50%; height:auto;">
+	
+	<h2 class="text-primary" style=
+		"margin-left: 15px; margin-bottom: 10px">
+		Hey There,Help Us In Collecting Data
+	</h2>
+	
+	<form class="container" id="contactForm">
+		<div class="card">
+			<div class="card-body">
+				<div class="form-group">
+					<label for="exampleFormControlInput1">
+						Enter Your Name
+					</label>
+					
+					<input type="text" class="form-control"
+					id="name" placeholder="Enter your name">
+				</div>
+
+				<div class="form-group">
+					<label for="exampleFormControlInput1">
+						Email address
+					</label>
+					
+					<input type="email" class="form-control"
+					id="email" placeholder="name@example.com">
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary"
+				style="margin-left: 15px; margin-top: 10px">
+				Submit
+			</button>
+		</div>
+	</form>
+
+	<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+    <!-- <script type="module" src= "/firebaseConfig.js"></script> -->
+	<script>
+		const firebaseConfig = {
+			apiKey: "AIzaSyCUM36WyNUQkPKMxs-aONokQzzB6Jf_Mnw",
+			authDomain: "libraryapp-a10b1.firebaseapp.com",
+			databaseURL: "https://libraryapp-a10b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+			projectId: "libraryapp-a10b1",
+			storageBucket: "libraryapp-a10b1.appspot.com",
+			messagingSenderId: "773046714159",
+			appId: "1:773046714159:web:546d36a05ba90d3cf72bda",
+			measurementId: "G-DGWRLS52QS"
+		};
+
+		// var { initializeApp } = require('https://www.gstatic.com/firebase.js/9.15.0/firebase-app.js')
+
+		firebase.initializeApp(firebaseConfig);
+
+		var formDB = firebase.database().ref("Web App");
+		
+		document.getElementById("contactForm").addEventListener("submit", submitForm);
+
+		function submitForm(e) {
+			e.preventDefault();
+
+			// Get values
+			var name = getElementVal('name');
+			var email = getElementVal('email');
+
+			// saveMessage(name, email);
+			// document.getElementById('contactForm').reset();
+
+			saveInput(name,email);
+			document.getElementById('contactForm').reset();
+		}
+
+		const saveInput = (name, email) => {
+			var newContactForm = formDB.push();
+
+			newContactForm.set({
+			name: name,
+			email: email,
+			});
+		}
+
+		const getElementVal = (id) => {
+			return document.getElementById(id).value;
+		}
+
+		formDB.on("value", function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+			var childData = childSnapshot.val();
+			var id=childData.id;
+			console.log(childData);
+			});
+		});
+	</script>
+</body>
+
+</html>

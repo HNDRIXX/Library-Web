@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@520&display=swap');
+
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        list-style: none;
+        text-decoration: none;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body{
+        background-color: #a72828;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .popup {
+        margin: 70px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 5px;
+        height: 60vh auto;
+        width: 60vw;
+        position: relative;
+        opacity: 1;
+        animation-name: fade;
+        animation-iteration-count: 1;
+        animation-timing-function: ease-in;
+        animation-duration: .8s;
+    }
+
+    @keyframes fade {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .popup h2 {
+        color: #360101;
+        font-size: 1.2rem;
+    }
+
+    .popup hr{
+        background-color: #000000;
+        padding: 0.7px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: none;
+    }
+
+    .popup .close {
+        position: absolute;
+        top: 10px;
+        right: 19px;
+        transition: all 200ms;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .popup .content {
+        margin: 10px;
+        width: 55vw;
+        overflow: auto;
+    }
+
+    #confirmButton{
+        background-color: #8d0909;
+        color: #fff;
+        outline: none;
+        border: none;
+        width: 20vw;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 0 auto;
+        display: block;
+
+        position: relative;
+        top: 50px;
+    }
+
+    #confirmButton i {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    #confirmButton:hover{
+        background-color: #640606;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    form  { 
+        display: table;      
+    }
+
+    p{ 
+        padding: 100px;
+        display: table-row;
+    }
+
+    label { 
+        display: table-cell; 
+        width: 12vw;
+        color: #580303;
+        font-size: 0.9em;
+        font-weight: 600;
+    }
+
+    span { 
+        display: table-cell;
+        font-size: 0.9em;
+    }
+
+    #imageBook{
+        margin-right: 50px;
+        width: 250px;
+        height: 330px;
+        float: left;
+    }
